@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+if [ -n "$WAYLAND_DISPLAY" ]; then
+    exec wl-copy
+elif [ -n "$DISPLAY" ]; then
+    exec xclip -selection clipboard
+else
+    echo "No clipboard backend found" >&2
+    exit 1
+fi
