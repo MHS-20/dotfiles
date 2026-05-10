@@ -1,17 +1,129 @@
+/* Catppuccin Mocha */
+
 * {
-  font-family: JetBrainsMono Nerd Font, sans-serif;
+  font-family: JetBrainsMono Nerd Font, monospace;
   font-size: 13px;
+  border: none;
+  border-radius: 0;
+  min-height: 0;
 }
 
-#pulseaudio,
-#battery,
-#network,
-#tray {
-    padding: 0 10px;
-}
-
-
+/* ── Bar ──────────────────────────────────────────────────────────────────── */
 window#waybar {
-  background: rgba(20,20,20,0.9);
-  color: white;
+  background: #11111b;
+  color: #cdd6f4;
+}
+
+/* ── Workspaces ───────────────────────────────────────────────────────────── */
+#workspaces {
+  background: #11111b;
+  padding: 0 4px;
+}
+
+#workspaces button {
+  padding: 0 8px;
+  margin: 4px 2px;
+  border-radius: 4px;
+  color: #6c7086;
+  background: #313244;
+  transition: background 0.2s, color 0.2s;
+}
+
+#workspaces button.active {
+  background: #cba6f7;
+  color: #1e1e2e;
+  font-weight: bold;
+}
+
+#workspaces button.urgent {
+  background: #f38ba8;
+  color: #1e1e2e;
+}
+
+#workspaces button:hover {
+  background: #45475a;
+  color: #cdd6f4;
+}
+
+/* ── Clock ────────────────────────────────────────────────────────────────── */
+#clock {
+  background: #11111b;
+  color: #cdd6f4;
+  font-weight: bold;
+  padding: 0 16px;
+  letter-spacing: 1px;
+}
+
+/* ── Right-side powerline ─────────────────────────────────────────────────── */
+/* The  character (U+E0B2, nerd font left-arrow) is added as a prefix
+   in each module's format string in the config. It sits on the background
+   of the segment to its right, colored to match its own segment. */
+
+#cpu {
+  background: #94e2d5;
+  color: #1e1e2e;
+  padding: 0 12px;
+}
+
+#memory {
+  background: #a6e3a1;
+  color: #1e1e2e;
+  padding: 0 12px;
+}
+
+#battery {
+  background: #f9e2af;
+  color: #1e1e2e;
+  padding: 0 12px;
+}
+
+#battery.warning {
+  background: #fab387;
+  color: #1e1e2e;
+}
+
+#battery.critical {
+  background: #f38ba8;
+  color: #1e1e2e;
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.6; }
+}
+
+#network {
+  background: #89b4fa;
+  color: #1e1e2e;
+  padding: 0 12px;
+}
+
+#network.disconnected {
+  background: #45475a;
+  color: #6c7086;
+}
+
+#pulseaudio {
+  background: #cba6f7;
+  color: #1e1e2e;
+  padding: 0 12px;
+}
+
+#pulseaudio.muted {
+  background: #45475a;
+  color: #6c7086;
+}
+
+#tray {
+  background: #313244;
+  padding: 0 10px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background: #f38ba8;
 }
