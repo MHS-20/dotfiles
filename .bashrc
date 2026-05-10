@@ -24,6 +24,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/sentinel/bin:$PATH"
 
 ### SSH AGENT
+eval $(keychain --eval --quiet ~/.ssh/id_ed25519)
 # if [ -z "$SSH_AUTH_SOCK" ]; then
 #    eval "$(ssh-agent -s)"
 # fi
