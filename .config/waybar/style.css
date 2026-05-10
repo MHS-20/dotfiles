@@ -2,7 +2,7 @@
 
 * {
   font-family: JetBrainsMono Nerd Font, monospace;
-  font-size: 13px;
+  font-size: 18px;
   border: none;
   border-radius: 0;
   min-height: 0;
@@ -69,6 +69,12 @@ window#waybar {
   background: #a6e3a1;
   color: #1e1e2e;
   padding: 0 12px;
+}
+
+#backlight {
+  background: #eba0ac; 
+    color: #1e1e2e;
+    padding: 0 12px;
 }
 
 #battery {

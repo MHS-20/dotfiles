@@ -3,34 +3,52 @@
   "position": "top",
   "height": 36,
   "spacing": 0,
-
-  "modules-left": ["hyprland/workspaces"],
-  "modules-center": ["clock"],
-  "modules-right": ["cpu", "memory", "battery", "network", "pulseaudio", "tray"],
-
+  "modules-left": [
+    "hyprland/workspaces"
+  ],
+  "modules-center": [
+    "clock"
+  ],
+  "modules-right": [
+    "cpu",
+    "memory",
+    "battery",
+    "network",
+    "pulseaudio",
+    "backlight",
+    "tray"
+  ],
   "hyprland/workspaces": {
     "format": "{id}",
     "on-click": "activate"
   },
-
   "clock": {
     "format": " {:%H:%M}",
     "format-alt": " {:%A, %d %B %Y}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
   },
-
   "cpu": {
     "interval": 2,
     "format": " 󰻠 {usage}%",
+    "on-click": "kitty --class htop-float -e htop",
     "tooltip": false
   },
-
   "memory": {
     "interval": 5,
     "format": " 󰍛 {used:0.1f}G",
+    "on-click": "kitty --class htop-float -e htop",
     "tooltip-format": "{used:0.1f}G / {total:0.1f}G"
   },
-
+  "backlight": {
+    "format": " {icon} {percent}%",
+    "format-icons": [
+      "󰃞",
+      "󰃟",
+      "󰃠"
+    ],
+    "on-scroll-up": "brightnessctl set +5%",
+    "on-scroll-down": "brightnessctl set 5%-"
+  },
   "battery": {
     "interval": 30,
     "states": {
@@ -40,9 +58,19 @@
     "format": " {icon} {capacity}%",
     "format-charging": " 󰂄 {capacity}%",
     "format-plugged": " 󰚥 {capacity}%",
-    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    "format-icons": [
+      "󰁺",
+      "󰁻",
+      "󰁼",
+      "󰁽",
+      "󰁾",
+      "󰁿",
+      "󰂀",
+      "󰂁",
+      "󰂂",
+      "󰁹"
+    ]
   },
-
   "network": {
     "interval": 5,
     "format-wifi": " 󰤨 {signalStrength}%",
@@ -51,17 +79,19 @@
     "tooltip-format-wifi": "{essid} ({signalStrength}%)\n󰕒 {bandwidthUpBits}  󰇚 {bandwidthDownBits}",
     "on-click": "nm-connection-editor"
   },
-
   "pulseaudio": {
     "format": " {icon} {volume}%",
     "format-muted": " 󰝟 muted",
     "format-icons": {
-      "default": ["󰕿", "󰖀", "󰕾"]
+      "default": [
+        "󰕿",
+        "󰖀",
+        "󰕾"
+      ]
     },
     "on-click": "pavucontrol",
     "tooltip": false
   },
-
   "tray": {
     "spacing": 8
   }
