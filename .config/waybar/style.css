@@ -133,3 +133,10 @@ window#waybar {
   -gtk-icon-effect: highlight;
   background: #f38ba8;
 }
+
+#custom-power {    
+  background: #11111b;
+  color: #f38ba8;
+  padding: 0 14px;
+  font-size: 20px;
+}

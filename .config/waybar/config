@@ -16,7 +16,8 @@
     "network",
     "pulseaudio",
     "backlight",
-    "tray"
+    "tray",
+    "custom/power"
   ],
   "hyprland/workspaces": {
     "format": "{id}",
@@ -94,5 +95,11 @@
   },
   "tray": {
     "spacing": 8
+  },
+  "custom/power": {
+    "format": "⏻",
+    "tooltip": false,
+    "on-click": "wlogout --protocol layer-shell -b 3 -T 350 -B 350 -L 350 -R 350"
+    // "on-click": "wlogout"
   }
 }
