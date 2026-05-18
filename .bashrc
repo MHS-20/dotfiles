@@ -7,9 +7,10 @@
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-alias ll='ls -l --color=auto'
+alias ll='ls -la --color=auto'
 alias k='kubectl'
 alias tf='terraform'
+alias cat='bat'
 alias zippa='zip -r "$(basename "$PWD").zip" .'
 alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
@@ -25,10 +26,6 @@ export PATH="$HOME/sentinel/bin:$PATH"
 
 ### SSH AGENT
 eval $(keychain --eval --quiet ~/.ssh/id_ed25519)
-# if [ -z "$SSH_AUTH_SOCK" ]; then
-#    eval "$(ssh-agent -s)"
-# fi
-# ssh-add ~/.ssh/id_ed25519
 
 ### RUST
 source $HOME/.cargo/env

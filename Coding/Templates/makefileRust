@@ -1,0 +1,70 @@
+CARGO   = cargo
+TARGET  = myapp
+PKG     = .
+
+.PHONY: all
+all:
+	@echo "  CARGO BUILD  $(TARGET)"
+	$(CARGO) build --release
+	@cp target/release/$(TARGET) .
+
+.PHONY: debug
+debug:
+	@echo "  CARGO BUILD (debug)  $(TARGET)"
+	$(CARGO) build
+	@cp target/debug/$(TARGET) .
+
+.PHONY: run
+run: all
+	./$(TARGET) $(ARGS)
+
+.PHONY: test
+test:
+	@echo "  CARGO TEST"
+	$(CARGO) test
+
+.PHONY: lint
+lint:
+	@echo "  CLIPPY"
+	$(CARGO) clippy -- -D warnings
+
+.PHONY: fmt
+fmt:
+	@echo "  FMT"
+	$(CARGO) fmt
+
+.PHONY: check
+check:
+	@echo "  CARGO CHECK"
+	$(CARGO) check
+
+.PHONY: clean
+clean:
+	$(CARGO) clean
+	rm -f $(TARGET)
+	@echo "  Cleaned."
+
+PREFIX  = /usr/local
+.PHONY: install
+install: all
+	install -m 755 $(TARGET) $(PREFIX)/bin/$(TARGET)
+	@echo "  Installed to $(PREFIX)/bin/$(TARGET)"
+
+.PHONY: uninstall
+uninstall:
+	rm -f $(PREFIX)/bin/$(TARGET)
+	@echo "  Uninstalled $(PREFIX)/bin/$(TARGET)"
+
+.PHONY: help
+help:
+	@echo "Targets:"
+	@echo "  all       — build release binary (default)"
+	@echo "  debug     — build debug binary"
+	@echo "  run       — build and run the binary  (pass ARGS=... to forward args)"
+	@echo "  test      — run all tests with cargo test"
+	@echo "  lint      — run clippy with -D warnings"
+	@echo "  fmt       — format source with cargo fmt"
+	@echo "  check     — cargo check (type-check without linking)"
+	@echo "  clean     — cargo clean + remove copied binary"
+	@echo "  install   — install to $(PREFIX)/bin"
+	@echo "  uninstall — remove from $(PREFIX)/bin"

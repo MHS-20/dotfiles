@@ -1,0 +1,58 @@
+CC      = gcc
+CFLAGS  = -Wall -Wextra -std=gnu99
+DBGFLAGS= -g3 -fsanitize=address,undefined
+LDFLAGS = -lm
+
+TARGET  = myapp
+SRC     = main.c utils.c 
+OBJ     = $(SRC:.c=.o)
+
+.PHONY: all
+all: $(TARGET)
+
+$(TARGET): $(OBJ)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+	@echo "  LD  $@"
+
+%.o: %.c
+	@echo "  CC  $<"
+	$(CC) $(CFLAGS) -c $< -o $@
+
+.PHONY: debug
+debug: CFLAGS += $(DBGFLAGS)
+debug: clean $(TARGET)
+
+.PHONY: run
+run: all
+	./$(TARGET)
+
+.PHONY: lint
+lint:
+	clang-tidy $(SRC) -- $(CFLAGS)
+
+.PHONY: clean
+clean:
+	rm -f $(OBJ) $(TARGET)
+	@echo "  Cleaned."
+
+PREFIX  = /usr/local
+.PHONY: install
+install: all
+	install -m 755 $(TARGET) $(PREFIX)/bin/$(TARGET)
+	@echo "  Installed to $(PREFIX)/bin/$(TARGET)"
+.PHONY: uninstall
+uninstall:
+	rm -f $(PREFIX)/bin/$(TARGET)
+	@echo "  Uninstalled $(PREFIX)/bin/$(TARGET)"
+
+
+.PHONY: help
+help:
+	@echo "Targets:"
+	@echo "  all       — build release binary (default)"
+	@echo "  debug     — build with -g3, ASan, UBSan"
+	@echo "  run       — build and run the shell"
+	@echo "  lint      — run clang-tidy static analysis"
+	@echo "  clean     — remove object files and binary"
+	@echo "  install   — install to $(PREFIX)/bin"
+	@echo "  uninstall — remove from $(PREFIX)/bin"

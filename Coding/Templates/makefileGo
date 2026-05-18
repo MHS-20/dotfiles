@@ -1,0 +1,75 @@
+GO      = go
+GOFLAGS =
+DBGFLAGS= -gcflags="all=-N -l"
+LDFLAGS =
+
+TARGET  = myapp
+PKG     = ./...
+MAIN    = .
+
+.PHONY: all
+all: $(TARGET)
+
+$(TARGET):
+	@echo "  GO BUILD  $(TARGET)"
+	$(GO) build $(GOFLAGS) $(LDFLAGS) -o $(TARGET) $(MAIN)
+
+.PHONY: debug
+debug: GOFLAGS += $(DBGFLAGS)
+debug: clean $(TARGET)
+
+.PHONY: run
+run: all
+	./$(TARGET) $(ARGS)
+
+.PHONY: test
+test:
+	@echo "  GO TEST"
+	$(GO) test $(PKG)
+
+.PHONY: lint
+lint:
+	@echo "  LINT"
+	$(GO) vet $(PKG)
+	@command -v staticcheck >/dev/null 2>&1 && staticcheck $(PKG) || \
+		echo "  (staticcheck not found; run: go install honnef.co/go/tools/cmd/staticcheck@latest)"
+
+.PHONY: fmt
+fmt:
+	@echo "  FMT"
+	$(GO) fmt $(PKG)
+
+.PHONY: tidy
+tidy:
+	@echo "  TIDY"
+	$(GO) mod tidy
+
+.PHONY: clean
+clean:
+	rm -f $(TARGET)
+	@echo "  Cleaned."
+
+PREFIX  = /usr/local
+.PHONY: install
+install: all
+	install -m 755 $(TARGET) $(PREFIX)/bin/$(TARGET)
+	@echo "  Installed to $(PREFIX)/bin/$(TARGET)"
+
+.PHONY: uninstall
+uninstall:
+	rm -f $(PREFIX)/bin/$(TARGET)
+	@echo "  Uninstalled $(PREFIX)/bin/$(TARGET)"
+
+.PHONY: help
+help:
+	@echo "Targets:"
+	@echo "  all       — build release binary (default)"
+	@echo "  debug     — build without optimisations (-N -l)"
+	@echo "  run       — build and run the binary"
+	@echo "  test      — run all tests"
+	@echo "  lint      — go vet + staticcheck"
+	@echo "  fmt       — gofmt all packages"
+	@echo "  tidy      — go mod tidy"
+	@echo "  clean     — remove binary"
+	@echo "  install   — install to $(PREFIX)/bin"
+	@echo "  uninstall — remove from $(PREFIX)/bin"
