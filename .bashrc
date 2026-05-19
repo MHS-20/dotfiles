@@ -1,4 +1,4 @@
-	#
+#
 # ~/.bashrc
 #
 
@@ -11,14 +11,15 @@ alias ll='ls -la --color=auto'
 alias k='kubectl'
 alias tf='terraform'
 alias cat='bat'
-alias zippa='zip -r "$(basename "$PWD").zip" .'
+# alias zippa='zip -r "$(basename "$PWD").zip" .'
+alias zippa='zip -r "$(basename "$PWD").zip" . -x "*.git*" "*.jar"'
 alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 #PS1='[\u@\h \W]\$ '
 PS1='\[\e[0;32m\]\u@\h \[\e[0;34m\]\w \$\[\e[0m\] '
 
 if [ -f /etc/profile.d/vte.sh ]; then
-    source /etc/profile.d/vte.sh
+  source /etc/profile.d/vte.sh
 fi
 
 export PATH="$HOME/.local/bin:$PATH"
@@ -48,4 +49,3 @@ export PATH="$JAVA_HOME/bin:$PATH"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
