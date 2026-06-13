@@ -11,6 +11,7 @@ alias ll='ls -la --color=auto'
 alias k='kubectl'
 alias tf='terraform'
 alias cat='bat'
+
 # alias zippa='zip -r "$(basename "$PWD").zip" .'
 alias zippa='zip -r "$(basename "$PWD").zip" . -x "*.git*" "*.jar"'
 alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
@@ -24,6 +25,8 @@ fi
 
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/sentinel/bin:$PATH"
+export GOPATH="$HOME/Programs/go"
+export PATH="$PATH:$HOME/Programs/go/bin"
 
 ### SSH AGENT
 eval $(keychain --eval --quiet ~/.ssh/id_ed25519)
@@ -49,3 +52,5 @@ export PATH="$JAVA_HOME/bin:$PATH"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+export VCPKG_ROOT=$HOME/.local/share/vcpkg
+export PATH=$VCPKG_ROOT:$PATH
