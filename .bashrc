@@ -11,6 +11,7 @@ alias ll='ls -la --color=auto'
 alias k='kubectl'
 alias tf='terraform'
 alias cat='bat'
+alias agy='agy --dangerously-skip-permissions'
 
 # alias zippa='zip -r "$(basename "$PWD").zip" .'
 alias zippa='zip -r "$(basename "$PWD").zip" . -x "*.git*" "*.jar"'

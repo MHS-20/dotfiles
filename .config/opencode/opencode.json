@@ -1,12 +1,12 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": [
-    "file:///usr/lib/opencode/plugins/opencode-antigravity-auth"
-  ],
   "provider": {
     "google": {
       "enabled": true
     }
   },
-  "model": "antigravity-claude-opus-4-5-thinking"
+  "model": "google/gemini-3.5-flash",
+  "plugin": [
+    "opencode-antigravity-auth"
+  ]
 }
