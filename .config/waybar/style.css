@@ -1,4 +1,4 @@
-/* Catppuccin Mocha */
+/* Hyprland default border gradient: #33ccff → #00ff99 */
 
 * {
   font-family: JetBrainsMono Nerd Font, monospace;
@@ -8,13 +8,11 @@
   min-height: 0;
 }
 
-/* ── Bar ──────────────────────────────────────────────────────────────────── */
 window#waybar {
   background: #11111b;
   color: #cdd6f4;
 }
 
-/* ── Workspaces ───────────────────────────────────────────────────────────── */
 #workspaces {
   background: #11111b;
   padding: 0 4px;
@@ -30,8 +28,8 @@ window#waybar {
 }
 
 #workspaces button.active {
-  background: #cba6f7;
-  color: #1e1e2e;
+  background: #33ccff;
+  color: #11111b;
   font-weight: bold;
 }
 
@@ -45,52 +43,40 @@ window#waybar {
   color: #cdd6f4;
 }
 
-/* ── Clock ────────────────────────────────────────────────────────────────── */
 #clock {
   background: #11111b;
-  color: #cdd6f4;
+  color: #33ccff;
   font-weight: bold;
   padding: 0 16px;
   letter-spacing: 1px;
 }
 
-/* ── Right-side powerline ─────────────────────────────────────────────────── */
-/* The  character (U+E0B2, nerd font left-arrow) is added as a prefix
-   in each module's format string in the config. It sits on the background
-   of the segment to its right, colored to match its own segment. */
-
 #cpu {
-  background: #94e2d5;
-  color: #1e1e2e;
+  background: #33ccff;
+  color: #11111b;
   padding: 0 12px;
 }
 
 #memory {
-  background: #a6e3a1;
-  color: #1e1e2e;
+  background: #2ec6f0;
+  color: #11111b;
   padding: 0 12px;
 }
 
-#backlight {
-  background: #eba0ac; 
-    color: #1e1e2e;
-    padding: 0 12px;
-}
-
 #battery {
-  background: #f9e2af;
-  color: #1e1e2e;
+  background: #29c0e2;
+  color: #11111b;
   padding: 0 12px;
 }
 
 #battery.warning {
   background: #fab387;
-  color: #1e1e2e;
+  color: #11111b;
 }
 
 #battery.critical {
   background: #f38ba8;
-  color: #1e1e2e;
+  color: #11111b;
   animation: blink 1s step-start infinite;
 }
 
@@ -99,8 +85,8 @@ window#waybar {
 }
 
 #network {
-  background: #89b4fa;
-  color: #1e1e2e;
+  background: #24b9d4;
+  color: #11111b;
   padding: 0 12px;
 }
 
@@ -110,8 +96,8 @@ window#waybar {
 }
 
 #pulseaudio {
-  background: #cba6f7;
-  color: #1e1e2e;
+  background: #1fb3c6;
+  color: #11111b;
   padding: 0 12px;
 }
 
@@ -120,8 +106,14 @@ window#waybar {
   color: #6c7086;
 }
 
+#backlight {
+  background: #1aadb8;
+  color: #11111b;
+  padding: 0 12px;
+}
+
 #tray {
-  background: #313244;
+  background: #15a7aa;
   padding: 0 10px;
 }
 
@@ -131,12 +123,12 @@ window#waybar {
 
 #tray > .needs-attention {
   -gtk-icon-effect: highlight;
-  background: #f38ba8;
+  background: #33ccff;
 }
 
-#custom-power {    
-  background: #11111b;
-  color: #f38ba8;
+#custom-power {
+  background: #10a19c;
+  color: #11111b;
   padding: 0 14px;
   font-size: 20px;
 }

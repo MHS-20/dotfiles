@@ -18,7 +18,7 @@ alias zippa='zip -r "$(basename "$PWD").zip" . -x "*.git*" "*.jar"'
 alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 #PS1='[\u@\h \W]\$ '
-PS1='\[\e[0;32m\]\u@\h \[\e[0;34m\]\w \$\[\e[0m\] '
+PS1='\[\e[38;2;77;255;170m\]\u@\h \[\e[0;34m\]\w \$\[\e[0m\] '
 
 if [ -f /etc/profile.d/vte.sh ]; then
   source /etc/profile.d/vte.sh

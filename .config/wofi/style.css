@@ -1,17 +1,18 @@
 window {
-  background: #1e1e2e;
+  background: #11111b;
   color: #cdd6f4;
-  border: 2px solid #cba6f7;
+  border: 2px solid #33ccff;
   border-radius: 8px;
   font-family: JetBrainsMono Nerd Font;
 }
 #input {
-  background: #313244;
+  background: #1e1e2e;
   color: #cdd6f4;
   border: none;
+  border-bottom: 2px solid #33ccff;
   padding: 8px;
 }
 #entry:selected {
-  background: #313244;
-  color: #cba6f7;
+  background: #33ccff;
+  color: #11111b;
 }
