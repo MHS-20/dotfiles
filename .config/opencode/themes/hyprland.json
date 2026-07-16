@@ -1,0 +1,27 @@
+{
+  "$schema": "https://opencode.ai/theme.json",
+  "defs": {},
+  "theme": {
+    "primary": { "dark": "#33ccff", "light": "#1a8fbf" },
+    "secondary": { "dark": "#2ec6f0", "light": "#1a8db3" },
+    "accent": { "dark": "#00ff99", "light": "#00b36b" },
+    "error": { "dark": "#f38ba8", "light": "#c06d84" },
+    "warning": { "dark": "#e5c07b", "light": "#b8934f" },
+    "success": { "dark": "#00ff99", "light": "#00b36b" },
+    "info": { "dark": "#33ccff", "light": "#1a8fbf" },
+    "text": { "dark": "#cdd6f4", "light": "#1e1e2e" },
+    "textMuted": { "dark": "#565f89", "light": "#6c7086" },
+    "background": { "dark": "#11111b", "light": "#ffffff" },
+    "backgroundPanel": { "dark": "#1a1b26", "light": "#f5f5f5" },
+    "backgroundElement": { "dark": "#1e1e2e", "light": "#e8e8e8" },
+    "border": { "dark": "#313244", "light": "#d0d0d0" },
+    "borderActive": { "dark": "#33ccff", "light": "#1a8fbf" },
+    "borderSubtle": { "dark": "#24283b", "light": "#e0e0e0" },
+    "diffAdded": { "dark": "#00ff99", "light": "#00b36b" },
+    "diffRemoved": { "dark": "#f38ba8", "light": "#c06d84" },
+    "diffContext": { "dark": "#565f89", "light": "#a0a0a0" },
+    "diffHunkHeader": { "dark": "#33ccff", "light": "#1a8fbf" },
+    "diffHighlightAdded": { "dark": "#4dffaa", "light": "#33cc77" },
+    "diffHighlightRemoved": { "dark": "#ff8ba8", "light": "#d47d94" }
+  }
+}
