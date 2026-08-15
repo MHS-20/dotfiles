@@ -7,6 +7,7 @@
   },
   "model": "google/gemini-3.5-flash",
   "plugin": [
-    "opencode-antigravity-auth"
+    "opencode-antigravity-auth",
+    "./plugins/caveman/plugin.js"
   ]
 }

@@ -11,3 +11,5 @@
 	allowedSignersFile = /home/sentinel/.gnupg/allowed_signers
 [init]
 	defaultBranch = main
+[core]
+	editor = vim
