@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+# figc — compile thesis figure sources to PDF (vector, for LaTeX) and PNG (for slides/preview).
+# Usage: figc [options] [FILE|DIR ...]
+#   no args        compile every source under ./figures (or $FIGDIR)
+#   -o DIR         output directory (default: <source dir>/out)
+#   -r DPI         PNG resolution (default 600)
+#   -w, --watch    recompile on change (needs inotifywait)
+#   -f, --force    rebuild even if output is newer than source
+#   --png-only | --pdf-only
+#   -q             quiet
+# Sources: .tex (standalone TikZ), .mmd (mermaid), .dot/.gv (graphviz),
+#          .drawio/.xml (draw.io), .svg
+set -uo pipefail
+
+DPI=600; OUT=""; WATCH=0; FORCE=0; WANT_PDF=1; WANT_PNG=1; Q=0; rc=0
+say(){ [ "$Q" = 1 ] || printf '%s\n' "$*"; }
+err(){ printf '\033[31m%s\033[0m\n' "$*" >&2; }
+ok(){  [ "$Q" = 1 ] || printf '\033[32m  ✓\033[0m %s\n' "$*"; }
+have(){ command -v "$1" >/dev/null 2>&1; }
+
+need(){ have "$1" && return 0
+  err "missing: $1 — $2"; return 1; }
+
+args=()
+while [ $# -gt 0 ]; do case "$1" in
+  -o) OUT="$2"; shift 2;;
+  -r) DPI="$2"; shift 2;;
+  -w|--watch) WATCH=1; shift;;
+  -f|--force) FORCE=1; shift;;
+  --png-only) WANT_PDF=0; shift;;
+  --pdf-only) WANT_PNG=0; shift;;
+  -q) Q=1; shift;;
+  -h|--help) sed -n '2,16p' "$0" | sed 's/^# \?//'; exit 0;;
+  *) args+=("$1"); shift;;
+esac; done
+
+topng(){ # $1=pdf $2=stem
+  [ "$WANT_PNG" = 1 ] || return 0
+  if have pdftocairo; then pdftocairo -png -r "$DPI" -singlefile "$1" "$2"
+  elif have magick; then magick -density "$DPI" "$1" -quality 100 "$2.png"
+  else err "no pdftocairo/magick for PNG"; return 1; fi
+}
+
+compile_one(){
+  local src="$1" dir stem out pdf
+  dir=$(cd "$(dirname "$src")" && pwd); stem=$(basename "${src%.*}")
+  out="${OUT:-$dir/out}"; mkdir -p "$out"; pdf="$out/$stem.pdf"
+  if [ "$FORCE" = 0 ] && [ -f "$pdf" ] && [ "$pdf" -nt "$src" ]; then
+    say "  · $stem (up to date)"; return 0; fi
+  say "  → $stem"
+  case "${src##*.}" in
+    tex)
+      need tectonic "pacman -S tectonic" || return 1
+      tectonic -X compile "$src" --outdir "$out" ${Q:+--print} >/dev/null 2>"$out/$stem.log" \
+        || { err "tectonic failed on $src:"; tail -20 "$out/$stem.log" >&2; return 1; }
+      topng "$pdf" "$out/$stem" || return 1;;
+    mmd|mermaid)
+      have mmdc && MM=(mmdc) || MM=(npx -y @mermaid-js/mermaid-cli)
+      "${MM[@]}" -i "$src" -o "$out/$stem.svg" -b transparent >/dev/null 2>&1 \
+        || { err "mermaid failed on $src"; return 1; }
+      svg2out "$out/$stem.svg" "$out" "$stem" || return 1;;
+    dot|gv)
+      need dot "pacman -S graphviz" || return 1
+      dot -Tpdf "$src" -o "$pdf" || return 1
+      topng "$pdf" "$out/$stem" || return 1;;
+    drawio|xml)
+      need drawio "pacman -S drawio-desktop" || return 1
+      local X=(); have xvfb-run && X=(xvfb-run -a)
+      [ "$WANT_PDF" = 1 ] && "${X[@]}" drawio --export --crop -f pdf -o "$pdf" "$src" >/dev/null 2>&1
+      [ "$WANT_PNG" = 1 ] && "${X[@]}" drawio --export --crop -t -s 4 -f png -o "$out/$stem.png" "$src" >/dev/null 2>&1
+      [ -f "$pdf" ] || [ -f "$out/$stem.png" ] || { err "drawio export failed on $src"; return 1; };;
+    svg) svg2out "$src" "$out" "$stem" || return 1;;
+    *) return 0;;
+  esac
+  ok "$stem"
+}
+
+svg2out(){ # $1=svg $2=outdir $3=stem
+  local pdf="$2/$3.pdf"
+  if [ "$WANT_PDF" = 1 ]; then
+    if have inkscape; then inkscape "$1" --export-type=pdf --export-filename="$pdf" >/dev/null 2>&1
+    elif have rsvg-convert; then rsvg-convert -f pdf -o "$pdf" "$1"
+    else err "no inkscape/rsvg-convert for SVG→PDF"; return 1; fi
+  fi
+  if [ "$WANT_PNG" = 1 ]; then
+    if have rsvg-convert; then rsvg-convert -f png -d "$DPI" -p "$DPI" -o "$2/$3.png" "$1"
+    elif [ -f "$pdf" ]; then topng "$pdf" "$2/$3"; fi
+  fi
+}
+
+collect(){
+  local t
+  if [ ${#args[@]} -eq 0 ]; then t="${FIGDIR:-figures}"
+    [ -d "$t" ] || { err "no ./$t — pass files explicitly or set FIGDIR"; exit 2; }
+    args=("$t"); fi
+  for t in "${args[@]}"; do
+    if [ -d "$t" ]; then
+      find "$t" -type f \( -name '*.tex' -o -name '*.mmd' -o -name '*.dot' \
+        -o -name '*.gv' -o -name '*.drawio' -o -name '*.svg' \) -not -path '*/out/*' | sort
+    else printf '%s\n' "$t"; fi
+  done
+}
+
+run(){ local f n=0
+  while IFS= read -r f; do [ -n "$f" ] || continue; n=$((n+1))
+    compile_one "$f" || rc=1
+  done < <(collect)
+  [ "$n" = 0 ] && say "no figure sources found"
+  return 0; }
+
+run
+if [ "$WATCH" = 1 ]; then
+  have inotifywait || { err "watch needs inotify-tools (pacman -S inotify-tools)"; exit 1; }
+  say "watching… (ctrl-c to stop)"
+  while inotifywait -qq -r -e close_write,move,create $(collect | xargs -r -n1 dirname | sort -u) 2>/dev/null; do
+    FORCE=0; run; done
+fi
+exit $rc

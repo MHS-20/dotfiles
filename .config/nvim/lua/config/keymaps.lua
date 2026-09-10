@@ -18,17 +18,17 @@ end, { desc = "Toggle terminal" })
 keymap("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
 keymap("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close split" })
 
--- Tabs (old)
--- keymap("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" })
--- keymap("n", "<leader>tn", "<cmd>tabnext<CR>", { desc = "Next tab" })
--- keymap("n", "<leader>tp", "<cmd>tabprevious<CR>", { desc = "Previous tab" })
--- keymap("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close tab" })
 
 -- Quit
 keymap("n", "<leader>q", "<cmd>qa<CR>", { desc = "Quit" })
 
 -- LazyGit
-keymap("n", "<leader>gg", "<cmd>LazyGit<CR>", { desc = "LazyGit" })
+keymap("n", "<leader>gg", function() Snacks.lazygit.open() end, { desc = "LazyGit" })
+
+-- LazyDocker
+keymap("n", "<leader>dd", function()
+  Snacks.terminal("lazydocker", { win = { style = "lazygit" } })
+end, { desc = "LazyDocker" })
 
 -- Tabs
 keymap("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" })

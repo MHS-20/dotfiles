@@ -3,6 +3,6 @@ return {
   opts = function(_, opts)
     -- We modify the opts table that LazyVim already created
     opts.window = opts.window or {}
-    opts.window.width = 15 -- Set your desired width here
+    opts.window.width = 20 -- Set your desired width here
   end,
 }

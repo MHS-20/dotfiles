@@ -20,6 +20,9 @@ metadata:
 Bundle seven conventions that apply to nearly every coding task, so they
 don't need to be repeated per-skill.
 
+## Minimal Output
+- Always be very minimal and concise in what you write as output 
+
 ## Commits
 
 - Use Conventional Commits format for the header only: `type(scope): subject`.
