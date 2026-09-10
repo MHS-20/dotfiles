@@ -31,3 +31,6 @@ require("default.hypr.toggles")
 -- cliamp (Music TUI) isn't in Omarchy's default floating-window list like
 -- btop is, so it tiles by default. Float it too for the music bar icon.
 o.window("org.omarchy.cliamp", { tag = "+floating-window" })
+
+-- Make terminals more transparent than the 0.985/0.96 Omarchy default.
+o.window({ tag = "terminal" }, { opacity = "0.90 0.84" })

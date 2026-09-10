@@ -1,5 +1,9 @@
 {
-  "model": "sonnet",
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -21,10 +25,6 @@
     }
   },
   "skipDangerousModePermissionPrompt": true,
-  "attribution": {
-    "commit": "",
-    "pr": ""
-  },
   "theme": "dark",
   "verbose": false,
   "autoMode": {
