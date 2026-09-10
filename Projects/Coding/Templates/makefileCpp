@@ -1,0 +1,72 @@
+CXX     = g++
+CXXFLAGS= -Wall -Wextra -std=c++17
+DBGFLAGS= -g3 -fsanitize=address,undefined
+LDFLAGS = -lm
+
+TARGET  = myapp
+SRC     = main.cpp utils.cpp
+OBJ     = $(SRC:.cpp=.o)
+
+.PHONY: all
+all: $(TARGET)
+
+$(TARGET): $(OBJ)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^
+	@echo "  LD  $@"
+
+%.o: %.cpp
+	@echo "  CXX  $<"
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+.PHONY: debug
+debug: CXXFLAGS += $(DBGFLAGS)
+debug: clean $(TARGET)
+
+.PHONY: run
+run: all
+	./$(TARGET) $(ARGS)
+
+.PHONY: test
+test:
+	@echo "  TEST"
+	@command -v ctest >/dev/null 2>&1 && ctest --output-on-failure || \
+		echo "  (ctest not found; add a CMakeLists.txt or swap in your test runner)"
+
+.PHONY: lint
+lint:
+	@echo "  LINT"
+	clang-tidy $(SRC) -- $(CXXFLAGS)
+
+.PHONY: fmt
+fmt:
+	@echo "  FMT"
+	clang-format -i $(SRC) $(wildcard *.h *.hpp)
+
+.PHONY: clean
+clean:
+	rm -f $(OBJ) $(TARGET)
+	@echo "  Cleaned."
+
+PREFIX  = /usr/local
+.PHONY: install
+install: all
+	install -m 755 $(TARGET) $(PREFIX)/bin/$(TARGET)
+	@echo "  Installed to $(PREFIX)/bin/$(TARGET)"
+
+.PHONY: uninstall
+uninstall:
+	rm -f $(PREFIX)/bin/$(TARGET)
+	@echo "  Uninstalled $(PREFIX)/bin/$(TARGET)"
+
+.PHONY: help
+help:
+	@echo "Targets:"
+	@echo "  all       — build release binary (default)"
+	@echo "  debug     — build with -g3, ASan, UBSan"
+	@echo "  run       — build and run the binary  (pass ARGS=... to forward args)"
+	@echo "  test      — run tests via ctest"
+	@echo "  lint      — run clang-tidy static analysis"
+	@echo "  fmt       — auto-format with clang-format"
+	@echo "  clean     — remove object files and binary"
+	@echo "  install   — install to $(PREFIX)/bin"
+	@echo "  uninstall — remove from $(PREFIX)/bin"

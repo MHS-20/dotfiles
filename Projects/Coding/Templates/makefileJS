@@ -1,0 +1,82 @@
+NODE    = node
+NPM     = npm
+ENTRY   = src/index.js
+TARGET  = myapp
+PKG     = .
+
+.PHONY: all
+all: node_modules
+	@echo "  Ready. Run: make run"
+
+node_modules: package.json
+	@echo "  NPM INSTALL"
+	$(NPM) install
+	@touch node_modules
+
+.PHONY: run
+run: node_modules
+	@echo "  RUN  $(ENTRY)"
+	$(NODE) $(ENTRY) $(ARGS)
+
+.PHONY: build
+build: node_modules
+	@echo "  BUILD"
+	$(NPM) run build
+
+.PHONY: dev
+dev: node_modules
+	@echo "  DEV SERVER"
+	$(NPM) run dev
+
+.PHONY: test
+test: node_modules
+	@echo "  TEST"
+	$(NPM) test
+
+.PHONY: lint
+lint: node_modules
+	@echo "  LINT"
+	$(NPM) run lint
+
+.PHONY: fmt
+fmt: node_modules
+	@echo "  FMT"
+	@command -v npx >/dev/null 2>&1 && npx prettier --write . || \
+		echo "  (prettier not found; add it: npm install --save-dev prettier)"
+
+.PHONY: typecheck
+typecheck: node_modules
+	@echo "  TYPECHECK"
+	@command -v npx >/dev/null 2>&1 && npx tsc --noEmit || \
+		echo "  (tsc not found; add it: npm install --save-dev typescript)"
+
+.PHONY: clean
+clean:
+	rm -rf node_modules dist build .cache
+	@echo "  Cleaned."
+
+PREFIX  = /usr/local
+.PHONY: install
+install: build
+	install -m 755 dist/$(TARGET) $(PREFIX)/bin/$(TARGET)
+	@echo "  Installed to $(PREFIX)/bin/$(TARGET)"
+
+.PHONY: uninstall
+uninstall:
+	rm -f $(PREFIX)/bin/$(TARGET)
+	@echo "  Uninstalled $(PREFIX)/bin/$(TARGET)"
+
+.PHONY: help
+help:
+	@echo "Targets:"
+	@echo "  all        — install npm dependencies (default)"
+	@echo "  run        — run the entry point with node  (pass ARGS=... to forward args)"
+	@echo "  build      — run npm run build (bundler step)"
+	@echo "  dev        — start development server (npm run dev)"
+	@echo "  test       — run test suite (npm test)"
+	@echo "  lint       — run linter (npm run lint)"
+	@echo "  fmt        — auto-format with prettier"
+	@echo "  typecheck  — tsc --noEmit type-check (TypeScript projects)"
+	@echo "  clean      — remove node_modules, dist, build"
+	@echo "  install    — copy built binary to $(PREFIX)/bin"
+	@echo "  uninstall  — remove from $(PREFIX)/bin"
