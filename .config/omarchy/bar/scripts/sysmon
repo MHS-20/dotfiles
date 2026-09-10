@@ -1,0 +1,24 @@
+#!/bin/bash
+# Prints CPU% and memory% for the bar's custom "sysmon" widget.
+
+read -r _ u1 n1 s1 i1 w1 irq1 sirq1 _ </proc/stat
+sleep 0.3
+read -r _ u2 n2 s2 i2 w2 irq2 sirq2 _ </proc/stat
+
+idle1=$((i1 + w1))
+idle2=$((i2 + w2))
+total1=$((u1 + n1 + s1 + i1 + w1 + irq1 + sirq1))
+total2=$((u2 + n2 + s2 + i2 + w2 + irq2 + sirq2))
+totald=$((total2 - total1))
+idled=$((idle2 - idle1))
+
+if [ "$totald" -gt 0 ]; then
+  cpu=$(((100 * (totald - idled)) / totald))
+else
+  cpu=0
+fi
+
+mem=$(free | awk '/Mem:/ {printf "%.0f", $3 / $2 * 100}')
+
+printf '{"text":"CPU %s%%  MEM %s%%","tooltip":"CPU %s%% \xc2\xb7 Memory %s%% \xe2\x80\x94 click to open btop"}\n' \
+  "$cpu" "$mem" "$cpu" "$mem"

@@ -1,0 +1,4 @@
+#!/bin/bash
+# Static icon for the bar's custom "music" widget; click opens cliamp.
+
+printf '{"text":"\xf0\x9f\x8e\xb5","tooltip":"Music \xe2\x80\x94 click to open cliamp"}\n'
