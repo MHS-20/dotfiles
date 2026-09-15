@@ -3,7 +3,7 @@
     "commit": "",
     "pr": ""
   },
-  "model": "opus",
+  "model": "sonnet",
   "hooks": {
     "Notification": [
       {

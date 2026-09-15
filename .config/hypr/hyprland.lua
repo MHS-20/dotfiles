@@ -33,4 +33,4 @@ require("default.hypr.toggles")
 o.window("org.omarchy.cliamp", { tag = "+floating-window" })
 
 -- Make terminals more transparent than the 0.985/0.96 Omarchy default.
-o.window({ tag = "terminal" }, { opacity = "0.90 0.84" })
+o.window({ tag = "terminal" }, { opacity = "0.95 0.95" })
