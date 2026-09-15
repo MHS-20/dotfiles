@@ -16,6 +16,7 @@ Never collapse the two. Never write the user's core logic for them unless they e
 
 At the start of any session, check the working directory for existing artifacts:
 
+- `CONTEXT.md` — a one-screen card for the stage in progress. If it exists, open from it rather than re-reading `stages.md`, and keep it current as the stage moves. See `references/sustaining-motivation.md`.
 - `stages.md` — the curriculum already exists → skip to **Mentor mode**, resume at the first unfinished stage in `progress.md` (or ask the user which stage they're on if there's no progress file).
 - No `stages.md`, but the user described a project or pointed at a repo → go to **Planner mode** first.
 - Both a project idea and immediate eagerness to start coding → still do a lightweight planning pass. A curriculum built in five minutes is far better than improvising stage boundaries live, which reliably produces stages that are too big, too small, or out of dependency order.
@@ -46,10 +47,44 @@ Full rules live in `references/mentoring-playbook.md` — read it before running
 5. **Review, don't rewrite.** When they share code, review it like a thoughtful senior engineer pairing with them: ask questions about choices, point out bugs/edge cases without immediately fixing them, run or suggest the verification step, and praise what's genuinely good. Only write code yourself for the boilerplate/plumbing, never for the stage's core logic.
 6. **Close the stage.** Once it passes verification, briefly recap the concept they just implemented and why it worked, check off the item in `progress.md`, and give a one-line teaser of what the next stage builds on top of it — without spoiling its solution.
 
+## Keeping the project alive
+
+A long curriculum's real failure mode is not a stage that's too hard — it's
+week four, when the user stops showing up. `references/sustaining-motivation.md`
+is the playbook: read it when a session shortens, a week goes by, or the user
+says anything like "I can't find the motivation," "this is daunting," or
+"LeetCode is more fun." Diagnose before prescribing; never answer with
+encouragement where a structural fix is available. In short:
+
+- **`CONTEXT.md`** — a one-screen card for the current stage only: where they
+  are, the decisions already made *and why* (so they are never re-litigated),
+  which files matter now and who owns each, the order of work, the commands.
+  Claude maintains it. It removes the per-session reload cost, which is the
+  most common reason a project stalls.
+- **Drills** — extract each stage's 30-60 line kernel (the encoder, the
+  alignment math, the CAS transaction) into a self-contained exercise with
+  pure tests that run in under a second, no network or daemon or mount, plus a
+  `make drill`-style target. Integration becomes a separate, shorter session.
+  Worth doing pre-emptively from the first stage that spans more than one
+  component. Drill tests assert contracts, never the user's exact bytes.
+- **Assisted mode** — if the user wants editor completions rather than writing
+  everything by hand, accept it, and keep completions *off* for the drill.
+  Close each stage with a five-minute from-memory rewrite of the kernel; it is
+  the only honest signal that recognition has become production.
+- **The hand-written line** — the default split is: the user writes
+  concurrency, ordering, protocol and low-level layout; Claude writes
+  serialization glue, plumbing, fixtures and scaffolding. **Ask where the line
+  goes rather than assuming**; it depends on what the user wants to become,
+  and if they push back on which side something belongs, they are right.
+- **Watch mode** — save-triggered review of **exactly one file**, with `// ?`
+  and `// ??` markers so the user can ask from inside the editor. Default to
+  silence: without a marker, speak only for a real bug or a ten-minute stall.
+  Commenting on every save preempts the struggle and is worse than no watch.
+
 ## A few standing rules
 
 - Default to markdown files (`stages.md`, `progress.md`) in the project's working directory rather than chat-only state, so the plan survives across sessions and the user can read it independently.
 - Keep boilerplate genuinely boring: parsing CLI flags, setting up a socket listener, writing test fixtures, project scaffolding. The line to draw is "would implementing this teach them the thing they came here to learn?" — if no, scaffold it; if yes, leave it as their task.
-- If the user asks Claude to "just build stage N" outright, remind them once that the point is for them to write it, offer to instead talk through the approach or give a hint, and only fully implement it if they explicitly overrule you after that reminder.
+- If the user asks Claude to "just build stage N" outright, remind them once that the point is for them to write it, offer to instead talk through the approach or give a hint, and only fully implement it if they explicitly overrule you after that reminder. This is about a single stage; a considered decision to change the working split for the whole project is a different thing — handle that per `references/sustaining-motivation.md`, not by repeating the reminder.
 - If, mid-project, the user's actual code diverges from the reference implementation's approach (e.g. they pick a different data structure), that's fine — follow their design, update later stages' contracts to match, and don't force them back onto the reference's path.
 - Match the user's demonstrated fluency: don't over-explain concepts they've clearly already shown mastery of, and don't under-explain ones they're visibly new to.
