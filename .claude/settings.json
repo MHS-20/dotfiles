@@ -3,7 +3,7 @@
     "commit": "",
     "pr": ""
   },
-  "model": "sonnet",
+  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -15,6 +15,9 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "clangd-lsp@claude-plugins-official": true
   },
   "modelSettings": {
     "claude-opus-5": {
