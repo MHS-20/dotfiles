@@ -43,9 +43,19 @@ paraphrase of its code, and not a tour of every file in the tree.
 4. Explicitly flag dead ends: legacy code paths being phased out, and files
    that look central but are actually thin re-exports. These waste the most
    time if misjudged.
-5. End with a short "if you are about to patch X, also check Y" map for the
-   2-3 most common change types in this repo (e.g. "new API route → check
-   middleware.ts for auth, and openapi.yaml for the contract").
+5. **Invariants.** List the 5-10 invariants the core logic depends on — the
+   properties a change must preserve (orderings, atomicity, uniqueness,
+   ownership, idempotency, security checks). For each: one sentence, what
+   breaks without it, and where it is enforced (`file:line` or function).
+   Start from an existing invariants file if the repo has one (`INVARIANTS.md`,
+   `docs/invariants.md`, an "Invariants" section in `AGENTS.md`/architecture
+   docs, or a location named in `CLAUDE.md`/memory); otherwise derive them from
+   the code and docs and offer to save them as `INVARIANTS.md` at the repo
+   root. Mark each as *verified in code* or *stated in docs only*.
+6. End with a short "if you are about to patch X, also check Y and preserve
+   invariant Z" map for the 2-3 most common change types in this repo (e.g.
+   "new API route → check middleware.ts for auth, and openapi.yaml for the
+   contract").
 
 ## When to use me
 
