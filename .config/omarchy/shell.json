@@ -1,14 +1,14 @@
 {
-  "version": 1,
-  "idle": {
-    "screensaver": 150,
-    "lock": 300
-  },
   "bar": {
-    "position": "top",
-    "transparent": true,
-    "centerAnchor": "omarchy.clock",
     "layout": {
+      "center": [
+        {
+          "id": "omarchy.clock",
+          "format": "ddd d MMM HH:mm",
+          "formatAlt": "d MMMM 'W'ww yyyy",
+          "verticalFormat": "HH\n—\nmm"
+        }
+      ],
       "left": [
         {
           "id": "omarchy.menu"
@@ -17,43 +17,26 @@
           "id": "omarchy.workspaces"
         }
       ],
-      "center": [
+      "right": [
         {
-          "id": "omarchy.indicators"
-        },
-        {
-          "id": "omarchy.clock",
-          "format": "ddd d MMM HH:mm",
-          "formatAlt": "d MMMM 'W'ww yyyy",
-          "verticalFormat": "HH\n—\nmm"
+          "id": "omarchy.tray"
         },
         {
           "id": "omarchy.keyboard-layout"
         },
         {
-          "id": "omarchy.weather"
-        },
-        {
-          "id": "omarchy.system-update"
-        }
-      ],
-      "right": [
-        {
-          "id": "sysmon",
-          "type": "command",
           "exec": "~/.config/omarchy/bar/scripts/sysmon",
+          "id": "sysmon",
           "interval": 3,
-          "onClick": "omarchy-launch-or-focus-tui btop"
+          "onClick": "omarchy-launch-or-focus-tui btop",
+          "type": "command"
         },
         {
-          "id": "music",
-          "type": "command",
           "exec": "~/.config/omarchy/bar/scripts/music-icon",
+          "id": "music",
           "interval": 3600,
-          "onClick": "omarchy-launch-or-focus-tui cliamp"
-        },
-        {
-          "id": "omarchy.tray"
+          "onClick": "omarchy-launch-or-focus-tui cliamp",
+          "type": "command"
         },
         {
           "id": "omarchy.agents"
@@ -73,8 +56,32 @@
         {
           "id": "omarchy.power"
         }
+      ],
+      "centerBegin": [
+        {
+          "id": "omarchy.indicators"
+        },
+        {
+          "id": "omarchy.elsewhen",
+          "zones": "Rome|Europe/Rome, Delhi|Asia/Kolkata, Tokyo|Asia/Tokyo, Los Angeles|America/Los_Angeles, New York|America/New_York"
+        }
+      ],
+      "centerEnd": [
+        {
+          "id": "omarchy.weather"
+        },
+        {
+          "id": "omarchy.system-update"
+        }
       ]
-    }
+    },
+    "position": "top",
+    "transparent": false
   },
-  "plugins": []
+  "idle": {
+    "lock": 300,
+    "screensaver": 150
+  },
+  "plugins": [],
+  "version": 1
 }

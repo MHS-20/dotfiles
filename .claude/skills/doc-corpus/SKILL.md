@@ -47,6 +47,10 @@ docs/
 - Write for someone with no memory of this conversation — don't say "as discussed" or "as just changed"; say what the thing does now.
 - Explain intent and usage, not a restatement of the code line by line — the same "why, not what" rule that applies to good comments applies here.
 
+## Describe the current design, not its history
+
+Docs describe what the system does now and why. Keep the problem each design choice solves and the concrete failure of the alternative, in the present tense ("an unconditional delete succeeds on a missing key, so the range would be freed twice"). Leave out the timeline: no "used to", "originally", "previously", "no longer", "until it was fixed", "this check once did X", dates of changes, or notes that an older version of the code or docs was wrong. Rewrite "X broke, so it was changed to Y" as "Y, because X would fail this way". The changelog is the one place where history belongs.
+
 ## Never reference the plan/todo
 
 Never mention a plan file, todo file, phase number, or item number in docs — write for someone reading the finished thing, not the process behind it.

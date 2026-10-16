@@ -1,5 +1,5 @@
 ---
-name: human-writing-latex
+name: human-writing
 description: |-
   Write or edit LaTeX prose in a formal, impersonal, scientific register that
   reads like a human author wrote it, not a language model — no first person,
@@ -19,7 +19,7 @@ metadata:
 
 ## What I do
 
-Write or revise scientific-paper/thesis prose in LaTeX in a formal, impersonal
+Write or revise scientific-paper/thesis prose in LaTeX (or markdown if specified) in a formal, impersonal
 register that reads as a human author's writing rather than obviously
 LLM-generated text.
 
@@ -201,6 +201,26 @@ Procedure, in order:
 4. **Write the claim only after reading it**, and cite the specific section,
    figure, or page — not merely the work as a whole.
 
+Look it up every time. Whenever the text describes something real (a
+protocol, a kernel interface, a library contract, the project's own code),
+open the source for that claim before writing it, even when the claim seems
+familiar or is already in the draft. This applies to rewording too: an
+existing sentence is not evidence. Re-verify every claim you carry over,
+because the draft may predate the code.
+
+For the project's own system, the code is the primary source, not its docs:
+
+- Read the function that implements the behaviour, not just its doc comment.
+  Docs, comments and earlier chapters drift. Check `git log` on the relevant
+  files for recent changes that may have made a statement false.
+- Where the code and the docs disagree, write what the code does, and report
+  the discrepancy to the user so the doc or comment can be fixed.
+- Take constants and defaults from where they are defined (intervals, sizes,
+  caps, timeouts, key formats), not from prose that quotes them.
+- When the code relies on an external contract (a libfuse header, a POSIX
+  page, an RFC), read that contract as well, and cite it rather than the
+  code comment that paraphrases it.
+
 Additional constraints:
 
 - Every non-obvious technical assertion carries a citation to something that
@@ -249,6 +269,13 @@ than describing it and moving on:
 - Keep the palette and node styles consistent with the thesis's other
   figures, per the `thesis-diagrams` template.
 
+Prefer drawing over describing: when a mechanism has moving parts (data
+flowing between components, state changing across steps, memory layout, a
+protocol exchange), a TikZ figure compiled with `tectonic` (directly, or via
+`figc`) usually explains it faster than a paragraph. Use arrows, grouping,
+and step numbers to show what moves and in what order, and one figure per
+idea rather than one dense figure for everything.
+
 Offer the figure when the prose would benefit; do not silently insert
 unrequested figures into an editing task on existing text.
 
@@ -261,22 +288,88 @@ homoglyph or invisible-character insertion. These damage the paper, are
 visible to reviewers and copy-editors, and constitute misrepresentation of the
 text. The legitimate route is §2 and §4: real specificity and real variation.
 
-## 13. Avoid this 5 traps
-1. Metadiscourse (significance-announcing). The sentence's job is to tell you the next sentence matters, rather than just saying the thing. "X is worth stating plainly," "That is not a detail," "Y deserves a mention of its own." Diagnostic: delete it and no information is lost. This is the largest category and the most characteristic.
+## 13. Avoid these traps
+1. Metadiscourse (significance-announcing). The sentence's job is to tell you the next sentence matters, rather than just saying the thing. "X is worth stating plainly," "That is not a detail," "Y deserves a mention of its own." Diagnostic: delete it and no information is lost. This is the largest category and the most characteristic. It often sits at the start of a paragraph as a stakes-raising opener: "\etcfs takes that literally.", "The cost is stated as plainly.", "One detail of trimming is easy to get wrong in a first implementation and hard to find later.", "The decisive point is that…", "The single most important structural fact about X is that…", "Two rows deserve comment." Fix: delete the opener and start with the claim ("The decisive point is that X needs etcd anyway" → "X needs etcd anyway").
 2. Aphoristic antithesis. The two-beat epigram, usually closing a paragraph: "not X. It is Y", "A does not disappear; it moves." One short punchy sentence after a long one, landing like a drumbeat. In moderation it's good prose; four per page reads as a machine that has learned cadence without having anything to be emphatic about.
-3. Text self-narration. Prose describing the document's own rhetorical behaviour instead of the subject: "Chapter 9 states this before it states any result," "Chapter 6 is largely an argument about when it must be invoked."
+3. Text self-narration. Prose describing the document's own rhetorical behaviour instead of the subject: "Chapter 9 states this before it states any result," "Chapter 6 is largely an argument about when it must be invoked." Includes cross-reference chaining, where a sentence exists only to link to another part of the document and characterise it: "Chapter 4 ended on an asymmetry.", "Figure 5.1 is the figure the rest of the thesis refers back to.", "Section 5.4 argues why that boundary is where it is.", "the design question this chapter answers", "Chapter 12 treats that as the standing liability it is.", section intros listing what the subsections will do, and a chapter's closing paragraph previewing the next chapter. Cut them. A bare pointer attached to content ("\cref{ch:evaluation} shows the measurements") is fine.
 4. Enumerated essence. "Two habits separate a model check from an ornament." A count plus an evaluative noun, presented as a discovered taxonomy. (Contrast "The protocol has two steps" — a count of actual countable things, which is fine.)
 5. Connoisseur diction. Words that rate rather than describe: ornament, repays attention, worth holding onto, the interesting one, the awkward case. They position the author as a judge of the material.
 Cutting across all five: unearned confidence — superlatives and totalising claims with nothing behind them ("the single largest reason a local filesystem feels fast").
 6. gnomic generalisations — the aphoristic maxim, or sententia in classical rhetoric: a timeless, subject-less, present-tense proposition offered as a general law rather than a claim about your system. Two markers make them detectable: an indefinite or universal subject ("A negative result…", "A checker never observed to fail…"), and a present-tense copula with no citation, no measurement, and no attachment to anything in the chapter. Related to the antithesis pattern, but distinct — antithesis is about shape, this is about epistemic posture. The register is the lecturer stating a principle rather than the author reporting work.
-7. consensus-appeal tag — a booster that props a claim up with imagined agreement ("nobody disputes it", "everyone agrees", "uncontroversially") instead of with evidence. It's dead weight in a thesis specifically because you've just given the measurement; the numbers are the warrant, and appealing to unnamed consensus on top of them weakens rather than strengthens.
+7. Consensus-appeal tag — a booster that props a claim up with imagined agreement ("nobody disputes it", "everyone agrees", "uncontroversially") instead of with evidence. It's dead weight in a thesis specifically because you've just given the measurement; the numbers are the warrant, and appealing to unnamed consensus on top of them weakens rather than strengthens.
+8. Verdict tails. A clause or trailing sentence appended to a claim that is already complete, grading it instead of adding a fact: "…rather than incidental benefits of it", "…and it is load-bearing rather than incidental", "the table is the inversion stated as a data layout", "a filesystem enforcing something other than what `ls -l` displays is a worse failure than one that enforces nothing of its own", "One store means one answer.", "and none of them is closable by tuning", "the cost is reported rather than argued away". Related to antithesis and gnomic maxims, but identified by position: it comes after the information, and cutting it at the last comma or full stop leaves the claim intact. Cut it there.
+9. Inflated wording. Where a plain word says the same thing, use it. Watch for dramatised verbs ("measures what it costs" → "shows the measurements"; "never learn that consensus got slower; writes feel all of it" → "send nothing to etcd, while every write waits for a commit"), inflated necessity ("ownership has to be a key" → "ownership is a key"), and intensifiers that add no information: exactly, precisely, genuinely, entirely, "at all", "the clearest example", "one interesting way".
 
+When revising existing prose against rules 1–9, change the framing only. Keep every technical claim, number, citation and cross-reference target that carries content. Most of these fixes are deletions; a sentence gets reworded only when deleting the framing would leave a fragment.
 
 ## 14 Avoid counterfactual self-reference
 Classification: counterfactual self-reference, an irrealis variant of the text self-narration family. Three things are stacked in it:
 1. Irrealis mood about the document itself — the thesis imagining an alternate version of itself that was never written. Not a claim about GFS2, etcd, or QAttach; a claim about a hypothetical manuscript.
 2. Authorial persona intrusion. "This thesis would be short" is a wink at the reader. It smuggles the author into an impersonal register without ever using "I" — the joke has a speaker even though the grammar doesn't name one.
 3. Stakes-boosting. It tells the reader the coming failure is important instead of letting §4.5 establish it.
+
+## 15. Clarity: explain before arguing
+
+The traps in §13 and §14 are about framing. This section is about sentences that are correct but hard to follow. The register stays formal and impersonal throughout, and clarity never justifies dropping precision.
+
+1. Define a term before relying on it. Before using a technical term (extent, logical block, generation, arena), check the earlier chapters and sections for a definition. If there is none, add a one- or two-sentence definition where the term first carries weight, usually in the background chapter, and let later chapters add only what is specific to the system. A later definition does not excuse earlier uses.
+2. One term per concept. When the background chapter names something ("logical block size"), later chapters use the same name. Do not switch to a near-synonym ("sector", "block boundary") in the same argument, and never use two of them in one sentence.
+3. One idea per sentence. If a sentence joins two separate justifications with a semicolon or with "and", such as why something is needed and why it goes one way rather than the other, split it. Nested clauses, stacked participles and appositives inside appositives are split the same way. Long sentences are fine when they carry one line of reasoning.
+4. State the mechanism, then its consequence. Say what the system does ("free space is the unclaimed arenas plus this node's own slack") before the property that follows from it ("so the figure is never too high"). A property stated without its mechanism reads as a slogan.
+5. Say what goes wrong, concretely. When an alternative is rejected, name the observable failure: data reads back as zeroes, `write` fails with `ENOSPC` while `df` shows room, access differs from the mode bits `ls -l` shows. "A worse failure", "inconsistent" and "diverge" alone are not enough.
+6. Use a small worked example for non-obvious mechanisms. For ordering, splitting, rounding, or any interaction between two records or two nodes, give concrete values: extent A covers bytes 0–100 with sequence 5, write B covers 40–60 with sequence 7. Keep it to a few sentences with real-looking numbers and name the outcome. Use examples sparingly: one for each mechanism that needs it, not one per paragraph.
+7. Make every referent resolvable. Name the thing a sentence depends on: "a stamp" becomes "the generation and writer fields of an extent"; "ranked by their own keys" becomes "ordered by the chunk number in the key". If a data format matters to the argument (field order, separator, parsing rule), state it.
+8. Headings and topic sentences say what the paragraph covers, not how interesting it is ("Three of the six fields exist because…", not "Three of the six fields repay attention").
+9. Open with what and why. A chapter or section starts by saying what it
+   covers and why the reader needs it, in concrete terms: what an application
+   observes, what problem the mechanism solves. Do not start with a detail.
+   This is content, not self-narration: "an application sees the filesystem
+   only through stat, read and rename; this design decides what they return"
+   rather than "this section discusses semantics".
+10. Check the background exists. Before relying on a concept the reader may
+    not know (hard links, unlink-while-open, readdir offsets, the scrubber,
+    serializable versus linearizable reads), search the earlier chapters. If
+    it is missing, add a short background subsection in the background or
+    architecture chapter, or a one-sentence definition at first use, and point
+    to it.
+11. The heading must match everything under it. If a subsection holds
+    material about something else (a rule about the snapshot under "Flush
+    before yield", a create race inside a paragraph about flushes), move it
+    or rename the subsection. Unrelated points never share a paragraph.
+12. Several rules or cases go in a list, or in one paragraph each with a
+    short bold lead naming the case. Never chain three or more rules into one
+    paragraph of semicolons.
+13. Cross-references point where the thing is actually explained. Before
+    writing \cref{...}, open the target and confirm it covers the claim.
+    Point the reader to the explanation, not to a passing mention of it.
+14. State limitations as limitations. When the system does not meet a
+    contract (a spec, a library requirement, POSIX), say so plainly, name
+    the case in which it fails, and give the concrete consequence. Do not
+    soften it by citing a permission the spec does not grant.
+15. Figures carry structure, the text carries explanation. Keep prose out of
+    figures: no paragraphs inside them and no summarising footers, only a
+    short label per element. Captions are two or three sentences: what is
+    shown, how to read it (line styles, numbering), what to notice. Long
+    reasoning belongs in a paragraph of its own that walks through the
+    figure, using the figure's step numbers. Every element in a figure must
+    match the code, including transitions and the lane an action sits on.
+    Check layout overlaps in the rendered PNG.
+16. Explain the current design by its reasons, never by its history. When a
+    choice needs justifying, state the problem it solves and what the
+    alternative would do wrong, in the present tense ("a per-lock lease would
+    add two commits to every write"), not how the design got there ("the
+    per-lock lease used to cost two commits"). §16 has the full rule.
+
+Check these against the source (§10). A worked example has to follow the real behaviour: every number and outcome in it must be something the code or documentation actually produces.
+
+## 16. Current design, not its history
+
+Describe the system as it is. The problems that shaped a design and the reasons for it stay; the timeline does not.
+
+- Keep: the alternative that was rejected and its concrete failure, stated in the present tense ("interleaving the fields would shift every later offset and make whole-second records unreadable"; "scanning the whole prefix would hand out offsets inside a peer's arena").
+- Drop: "earlier versions did X, now Y", "used to", "originally", "initially", "no longer", "until it was fixed", "was corrected", "since the change", dates of changes, and remarks that a previous version of the code or the docs was wrong.
+- Rewrite "X broke, so it was changed to Y" as "Y, because X would fail in this way". If removing the history leaves a design choice without a reason, restore the reason in the present tense rather than leaving the choice unexplained.
+- Measurements stay. A measured failure of the rejected alternative is evidence, reported as a measurement of that alternative, not as an episode in the project's past.
 
 ## Self-check before returning text
 
@@ -294,11 +387,29 @@ Run these mechanically:
    each other.
 6. Deletion test: any sentence that could be removed without losing content is
    padding — cut it.
-7. Hedging is asymmetric, not uniform (§6), and every hedge names its reason.
-8. Every technical claim traces to a document actually read (§10); every
+7. Framing sweep (§13): check each paragraph's first and last sentence for a
+   stakes-raising opener or a verdict tail, and check every sentence naming a
+   chapter, section or figure for self-narration. Cut what fails the deletion test.
+8. Clarity pass (§15): every technical term is defined before it carries
+   weight; one name per concept; no sentence carries two separate arguments;
+   every rejected alternative names its concrete failure; non-obvious
+   mechanisms have a worked example that matches the source.
+9. Hedging is asymmetric, not uniform (§6), and every hedge names its reason.
+10. Every technical claim traces to a document actually read (§10); every
    `\cite{}` key resolves in the `.bib`; nothing was written from memory.
-9. Every figure is compiled, viewed, captioned, labelled, and referenced from
+11. Every figure is compiled, viewed, captioned, labelled, and referenced from
    the prose (§11).
+12. History sweep (§16): grep for used to|originally|initially|no longer|until it
+   was|was fixed|was corrected|previous(ly)?|earlier version|older|now ; each hit
+   is recast as the present design plus its reason.
+13. Source sweep (§10): for each claim about the project's system, name
+    the file or function it was checked against in this session. Claims
+    taken only from docs or the existing draft are re-checked in code.
+14. Structure sweep (§15.9–15.16): every section opens with what and why;
+    every term has background; every heading matches its content; every
+    \cref target covers the claim; figures hold no prose and captions are
+    at most three sentences; design choices are justified by reasons, not
+    history.
 
 ## When to use me
 

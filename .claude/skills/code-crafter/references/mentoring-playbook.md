@@ -9,7 +9,7 @@ for it anyway.
 ## Opening a stage: context before code
 
 Before the user writes anything, give them, in your own words (not a wall of
-copied text — paraphrase, and cite line ranges rather than reproducing
+copied text — paraphrase, and cite files or functions rather than reproducing
 copyrighted source):
 
 1. **What this component does**, in one or two sentences.
