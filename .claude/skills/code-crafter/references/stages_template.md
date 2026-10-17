@@ -25,7 +25,7 @@ consistent so mentor mode can scan it reliably across a long curriculum.
 - **Difficulty:** light | medium | heavy
 - **Estimated time:** <e.g. 45-60 min>
 - **Why it matters:** <2-4 sentences of real-world context>
-- **Reference:** `path/to/file.ext:120-168` (or spec section, or design-doc link)
+- **Reference:** `path/to/file.ext` (`function_name`) (or spec section, or design-doc link)
 - **Depends on:** Stage <N> (or "none — this is the first stage")
 
 ### Task
@@ -84,7 +84,7 @@ in Go, showing the expected level of specificity.
   right in the face of partial reads — is the load-bearing piece of the
   entire project. This is also a great worked example of the general
   "framing" problem in any binary protocol over a stream socket.
-- **Reference:** `redis/src/resp_parser.c:1-140` in the real Redis source
+- **Reference:** `redis/src/networking.c` (`processMultibulkBuffer`) in the real Redis source
   covers the analogous parsing logic; for this stage, follow the RESP2 spec
   at https://redis.io/docs/reference/protocol-spec/ rather than the C
   implementation's exact structure, since Go's idioms differ substantially.
@@ -149,10 +149,11 @@ pass, including the "split across two reads" and "empty array" cases.
 
 ## Notes on citing reference source
 
-- Cite exact file + line ranges you've actually read, never guessed ranges.
+- Cite files, or at most functions, that you've actually opened. Never cite
+  line ranges: they go stale with every edit to the reference.
 - Never reproduce large chunks of the reference source into `stages.md` —
   point at it, don't paste it. A short (under ~15 word) illustrative
   fragment is fine if truly necessary; anything longer, just describe it in
   your own words and give the pointer.
 - If the reference project has since changed, pin the commit hash or tag
-  you read so line numbers stay valid for the user.
+  you read so the cited files and functions still match for the user.

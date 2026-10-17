@@ -25,11 +25,15 @@
     },
     "claude-sonnet-5": {
       "effortLevel": "low"
+    },
+    "claude-opus-5-5": {
+      "effortLevel": "low"
     }
   },
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
   "verbose": false,
+  "switchModelsOnFlag": false,
   "autoMode": {
     "environment": [
       "### Org-wide",

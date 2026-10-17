@@ -7,6 +7,8 @@ local opts = { noremap = true, silent = true }
 
 -- Insert mode
 keymap("i", "jk", "<ESC>", opts)
+keymap("n", "<leader>o", "o<Esc>", { desc = "Blank line below" })
+keymap("n", "<leader>O", "O<Esc>", { desc = "Blank line above" })
 
 -- Terminal
 -- keymap("n", "<leader>tt", "<cmd>terminal<CR>", { desc = "Open terminal" })

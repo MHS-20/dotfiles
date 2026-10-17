@@ -8,16 +8,16 @@ in the plan.
 
 - **Reference-implementation-backed** (e.g. "build my own Redis," "build my
   own git"): a real, well-known codebase exists that the user can be pointed
-  at line-by-line. Prefer citing *that* project's actual source.
+  at file by file. Prefer citing *that* project's actual source.
 - **Spec-backed, no single reference impl** (e.g. "build an HTTP/1.1 server,"
   "build a BitTorrent client"): there's an RFC/spec but no single canonical
-  codebase to cite. Reference the spec section number instead of code lines.
+  codebase to cite. Reference the spec section number instead of source files.
 - **Open-ended / user's own design** (e.g. "build a job-queue system like the
   one at my company"): no external reference at all. Stages cite the design
-  document Claude and the user produce together instead of external lines.
+  document Claude and the user produce together instead of external sources.
 
 Ask which bucket applies if it's not obvious — it changes what "reference
-lines" means in every stage entry.
+pointers" mean in every stage entry.
 
 ## 2. Find the learning-critical path
 
@@ -102,8 +102,10 @@ Follow `stages_template.md` for exact formatting. Every stage needs:
 - **Concept(s) introduced** — one line, plain language.
 - **Why it matters** — a few sentences of real-world context: what breaks or
   is impossible without this piece, what systems use this idea elsewhere.
-- **Reference pointer** — for reference-backed targets: `repo/path/file.ext`
-  with a line range (get exact ranges by reading the file, don't guess). For
+- **Reference pointer** — for reference-backed targets: `repo/path/file.ext`,
+  optionally narrowed to function names (`file.c` (`parse_args`)). Never cite
+  line ranges: they go stale with every edit. Only name files and functions you
+  have actually opened. For
   spec-backed targets: the RFC/spec section number and title. For open-ended
   targets: reference the shared design doc section.
 - **Task description** — precise, unambiguous statement of what the user's

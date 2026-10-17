@@ -1,19 +1,21 @@
 ---
 name: omni
 description: |-
-  Standing background conventions for every coding session, active
-  regardless of which other skill is in use: header-only Conventional
+  Conventions for implementing code once the design is agreed (typically
+  after design-first): header-only Conventional
   Commits with small/frequent commits, code quality judged by elegance,
   simplicity, and SOLID principles, terse token-conscious responses
   outside of documentation, avoiding over-engineered code and comments,
   keeping the user informed with plans and milestones, updating existing
   documentation in place alongside behavior changes, and never guessing a
-  fact that can be looked up. Always applies during coding tasks.
+  fact that can be looked up. Use when writing, editing or committing code.
+  Not for study, examining or design discussion (own-the-project,
+  design-first), which need full explanations, not terse output.
 license: MIT
 compatibility: opencode
 metadata:
   audience: developers
-  scope: always-on
+  scope: implementation
 ---
 ## What I do
 
@@ -131,6 +133,12 @@ don't need to be repeated per-skill.
   already has.
 - If there is a plan or a todo list, don't reference in the phases or items number in the docs.
   Don't reference plan, todo or next steps files in the docs nor in source code comments.
+- Write docs and code comments about the current design, not its history:
+  keep the problem a choice solves and the failure of the alternative, in the
+  present tense; drop "used to", "originally", "no longer", "until it was
+  fixed", "the previous version did X". Rewrite "X broke, so it became Y" as
+  "Y, because X would fail this way". History belongs only in the changelog
+  and commit messages.
 
 ## Never guess
 
@@ -143,5 +151,6 @@ don't need to be repeated per-skill.
 
 ## When to use me
 
-Always active during coding sessions in this repository, in addition to
-whatever other skill is in use for the specific task at hand.
+When implementing, editing or committing code — typically after the design
+has been agreed with design-first. Not during study, examining or design
+discussion, where full explanations matter more than terse output.
