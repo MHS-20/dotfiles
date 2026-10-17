@@ -57,10 +57,17 @@ verifies, grades and corrects against the code.
    earlier modules.
 2. **Frame** — one paragraph: the problem this module solves and the invariant
    it protects. Optionally ask the user how *they* would have built it first.
-3. **Targeted reading** (~20 min) — name exact docs sections and, where useful,
-   the 50–150 lines of code that carry the invariant. Never "read the docs".
-   Design-decision records are always worth assigning: they hold the *why* and
-   the rejected alternatives that code cannot show.
+3. **Background, then targeted reading** (~20 min) — before assigning
+   anything, give the background the module's questions rely on: the
+   primitives of the underlying platform (e.g. etcd revisions, CreateRevision,
+   compaction, serializable vs linearizable reads), each explained with a
+   concrete example. Docs usually stop at "what", while the questions ask
+   about semantics, so never assume the reading supplies this. Then name
+   exact docs sections, never "read the docs". The reading list is **docs
+   only**: do not ask the user to open code files alongside docs. Code is
+   shown in chat in step 4. Design-decision records are always worth
+   assigning: they hold the *why* and the rejected alternatives that code
+   cannot show.
 4. **Code walkthrough** — Claude shows the core pieces in chat (quoted from
    the file with `file:line`, never paraphrased from memory), in 20–60 line
    excerpts, each followed by commentary on:
@@ -131,6 +138,34 @@ sessions progress:
   would when reviewing an AI's diff.
 - **Design drills** — "the reviewer asks for feature Y: which invariants does
   it touch, what would you tell the AI to do, what would you forbid?"
+
+## Clarity of explanations
+
+Questions stay hard and precise. Explanations and corrections must be easy to
+follow. Rules (adapted from the `human-writing` skill, §13–15):
+
+1. **Background before argument.** Before using a term or primitive the user
+   may not know, define it in one or two sentences with a concrete example.
+   If a question depends on it, give it *before* the question, not in the
+   correction afterwards.
+2. **Mechanism, then consequence.** Say what the code does before naming the
+   property that follows from it. A property without its mechanism reads as
+   a slogan.
+3. **Worked examples with real-looking values.** For any interaction between
+   two keys, two nodes or two steps, use numbers: `/a` is inode 57,
+   `dirent:57/b`, revision 151. Placeholders like `<A>` are defined the
+   first time they appear.
+4. **One idea per sentence; one point per paragraph.** Split sentences that
+   join two justifications. Several rules or cases go in a list, never in one
+   paragraph of semicolons.
+5. **Less density.** Fewer, shorter sections per message. A correction covers
+   what the user got wrong and the one or two facts needed to fix it; extra
+   material waits for the log or a later question.
+6. **Say what goes wrong, concretely.** Name the observable failure (read
+   returns zeros, `ENOENT`, a leaked inode), not "inconsistent" or "breaks".
+7. **No framing filler.** No stakes-raising openers ("this is the key
+   point"), no verdict tails, no aphorisms. State the fact.
+8. **One term per concept.** Use the code's name and keep it.
 
 ## Tone
 

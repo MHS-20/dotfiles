@@ -57,6 +57,25 @@ paraphrase of its code, and not a tour of every file in the tree.
    "new API route → check middleware.ts for auth, and openapi.yaml for the
    contract").
 
+## Clarity of explanations
+
+Adapted from the `human-writing` skill:
+
+1. **Background before argument.** Define any domain term or platform
+   primitive (a store's revision model, a lock mode, a protocol message) in
+   one or two sentences before relying on it.
+2. **Mechanism, then consequence.** Say what the code does, then the property
+   that follows.
+3. **Worked examples.** For non-obvious interactions, use concrete values
+   (key names, numbers, step order) instead of placeholders.
+4. **One idea per sentence, one point per paragraph.** Several rules go in a
+   list, not a chain of semicolons.
+5. **Name concrete failures** ("the write is lost", "returns `EEXIST`"), not
+   "inconsistent" or "breaks".
+6. **No framing filler**: no stakes-raising openers, verdict tails or
+   aphorisms.
+7. **One term per concept**, the one the code uses.
+
 ## When to use me
 
 Use before an architectural decision, before a non-trivial patch, or whenever
