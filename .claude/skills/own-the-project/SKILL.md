@@ -166,6 +166,11 @@ follow. Rules (adapted from the `human-writing` skill, §13–15):
 7. **No framing filler.** No stakes-raising openers ("this is the key
    point"), no verdict tails, no aphorisms. State the fact.
 8. **One term per concept.** Use the code's name and keep it.
+9. **Semantics over formats.** Ask and grade on the facts an operation must
+   check and what fails without each check, stated in plain words ("the name
+   still points at the same file"). Do not require the user to recall key
+   strings, encodings or field layouts unless a question is specifically about
+   encoding; show them in code excerpts instead.
 
 ## Tone
 
