@@ -31,3 +31,13 @@ Child pages appear in `get` output as `<page url="https://app.notion.com/p/<32he
 - **Dump a page tree**: recurse on the `<page url=...([0-9a-f]{32})">` matches with a small Python script (`subprocess.run([...], stdin=DEVNULL, timeout=120)`). Run independent trees in parallel. Write the dumps to the scratchpad.
 - **Shrink a dump before reading**: remove image tags, long URLs, `<empty-block/>`, `<span ...>` tags and `~~strikethrough~~` with `sed`. That cuts the size by about 2–4×. Then list `title:` / `##` lines to map the structure, and read only the condensed sections.
 - Markdown written with `edit`/`create` supports headings, nested lists, bold/italic and code blocks.
+
+## Page font (Serif/Mono)
+The public API cannot set a page's font. Generate a console script for a whole tree instead:
+```bash
+python3 -I ~/.claude/skills/ntn/scripts/page_font_js.py <root-page-id> serif out.js   # or default|mono
+```
+It lists every descendant page (via `ntn pages get`) and writes JS that uses Notion's internal web API (`/api/v3/syncRecordValues` + `saveTransactions`, path `format.page_font`) with the logged-in session. The user runs it: notion.so → F12 → Console → type `allow pasting` by hand at the prompt → paste → Enter → reload. Set `DRY_RUN = true` in the file to only list pages. Unofficial API: if it returns non-2xx, the format changed. Verified working on 2026-11-14 (290 pages).
+
+## Icons
+`ntn api v1/pages/<id> -X PATCH -d '{"icon":{"type":"emoji","emoji":"📐"}}' </dev/null` (`{"icon":null}` removes it; `"cover"` works the same way).
