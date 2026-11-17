@@ -130,10 +130,15 @@ def parse(md, base_dir="."):
                 i += 1
             out(block("quote", "\n".join(quote).strip()))
             continue
-        elif m := re.match(r"\s*[-*] (.*)", line):
-            out(block("bulleted_list_item", m.group(1)))
-        elif m := re.match(r"\s*\d+\. (.*)", line):
-            out(block("numbered_list_item", m.group(1)))
+        elif m := re.match(r"(\s*)([-*]|\d+\.) (.*)", line):
+            kind = "bulleted_list_item" if m.group(2) in "-*" else "numbered_list_item"
+            item = block(kind, m.group(3))
+            parent = (target if target is not None else blocks)
+            last = parent[-1] if parent else None
+            if m.group(1) and last and last["type"] in ("bulleted_list_item", "numbered_list_item"):
+                last[last["type"]].setdefault("children", []).append(item)  # one nesting level
+            else:
+                out(item)
         elif line.strip():
             para = [line]
             while i + 1 < len(lines) and lines[i + 1].strip() and not re.match(r"(#|>|```|!\[|\s*[-*] |\s*\d+\. |<)", lines[i + 1]):

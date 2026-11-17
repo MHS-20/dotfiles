@@ -43,7 +43,7 @@ Use structured endpoints via `curl`/Python, not page-by-page browsing. Save inte
 Notes: `grep` on this machine is ugrep (rejects some long regexes); do text extraction in Python. Bologna/Emilia results are mostly agencies and industrial automation; Milan has most Italian backend roles.
 
 ## 1. Fill the form
-1. Read the job post. Pick the resume variant and, if asked for, build the cover letter (see `CLAUDE.md`).
+1. Read the job post. Pick the resume variant and, if asked for, build the cover letter (see `CLAUDE.md`; use the `cover-letter` skill for the letter and the `tech-resume` skill when a resume variant needs new or rewritten bullets).
 2. Fill the form from `applicant_profile.md`, `../Personal/*.md`, `trascript.pdf`.
 3. Stop and hand over to the user to review and press Submit.
 
@@ -76,4 +76,4 @@ Notes: `grep` on this machine is ugrep (rejects some long regexes); do text extr
 3. <new-grad onboarding: first projects, ramp-up>
 ```
 
-Questions must reference something concrete found in the research, not generic ones.
+Questions must reference something concrete found in the research, not generic ones. For deeper questions on engineering standards, on-call, manager and growth (and the post-offer reverse interview), use the `reverse-interview` skill.
