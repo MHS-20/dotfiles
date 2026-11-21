@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Unmount the Windows partition from /mnt/windows.
+set -euo pipefail
+MNT=/mnt/windows
+if ! mountpoint -q "$MNT"; then echo "Not mounted"; exit 0; fi
+sudo umount "$MNT"
+echo "Windows unmounted"

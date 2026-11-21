@@ -65,6 +65,65 @@ echo " Emptying trash..."
 rm -rf ~/.local/share/Trash/* 2>/dev/null || true
 
 # =========================
+# 8. mise: unused tool versions
+# =========================
+echo " Pruning unused mise versions..."
+mise prune -y 2>/dev/null || true
+
+# =========================
+# 9. Rust: old toolchains (keep newest)
+# =========================
+if command -v rustup >/dev/null; then
+  echo " Removing old Rust toolchains..."
+  old=$(rustup toolchain list | awk '{print $1}' | sort -V | head -n -1)
+  [ -n "$old" ] && rustup toolchain uninstall $old || true
+fi
+rm -rf ~/.cargo/registry/cache ~/.cargo/registry/src 2>/dev/null || true
+
+# =========================
+# 10. Go module cache
+# =========================
+echo " Cleaning Go module cache..."
+command -v go >/dev/null && go clean -modcache || true
+
+# =========================
+# 11. Discord cache (only if not running)
+# =========================
+if ! pgrep -x -i discord >/dev/null; then
+  echo " Cleaning Discord cache..."
+  rm -rf ~/.config/discord/{Cache,"Code Cache",GPUCache} 2>/dev/null || true
+else
+  echo " Discord running, skipping its cache"
+fi
+
+# =========================
+# 12. Browser / app caches (only if app not running)
+# =========================
+clean_if_closed() { # $1 = process name, rest = paths
+  local proc=$1; shift
+  if pgrep -i -f "$proc" >/dev/null; then
+    echo " $proc running, skipping its cache"
+  else
+    echo " Cleaning $proc cache..."
+    rm -rf "$@" 2>/dev/null || true
+  fi
+}
+BRAVE="$HOME/.config/BraveSoftware/Brave-Browser"
+clean_if_closed brave \
+  "$BRAVE"/*/"Service Worker"/CacheStorage "$BRAVE"/*/{Cache,"Code Cache",GPUCache} \
+  "$BRAVE"/{component_crx_cache,extensions_crx_cache,GrShaderCache,ShaderCache,GPUPersistentCache}
+clean_if_closed Telegram ~/.local/share/TelegramDesktop/tdata/user_data*
+clean_if_closed Z-Library ~/.config/Z-Library/Cache
+
+# =========================
+# 13. Dev tool caches
+# =========================
+echo " Cleaning dev tool caches..."
+command -v npm >/dev/null && npm cache clean --force 2>/dev/null || true
+rm -rf ~/.local/share/vcpkg/{buildtrees,downloads,packages} 2>/dev/null || true
+: > ~/.local/state/nvim/lsp.log 2>/dev/null || true
+
+# =========================
 # Done
 # =========================
 echo " Cleanup finished!"

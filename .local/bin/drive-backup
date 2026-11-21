@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Copy Documents, Pictures and Work to Google Drive (never deletes anything on Drive).
+# Skips .git folders, Work/Offers and Work/EtcFS. Extra args are passed to rclone (e.g. --dry-run).
+set -uo pipefail
+REMOTE=googledrive
+FLAGS=(--update --fast-list --transfers 16 --checkers 16 --drive-chunk-size 64M
+       --exclude ".git/**" -P "$@")
+status=0
+for dir in Documents Pictures Work; do
+  echo "==> $dir"
+  extra=()
+  [[ $dir == Work ]] && extra=(--exclude "/Offers/**" --exclude "/EtcFS/**")
+  rclone copy "$HOME/$dir" "$REMOTE:$dir" "${FLAGS[@]}" "${extra[@]}" || status=1
+done
+(( status == 0 )) && echo "Backup complete" || echo "Backup finished with errors" >&2
+exit $status

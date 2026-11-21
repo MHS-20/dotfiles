@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Mount the Windows partition read-only at /mnt/windows.
+set -euo pipefail
+DEV=/dev/nvme0n1p5
+MNT=/mnt/windows
+if mountpoint -q "$MNT"; then echo "Already mounted at $MNT"; exit 0; fi
+sudo mkdir -p "$MNT"
+sudo mount -t ntfs3 -o ro,uid="$(id -u)",gid="$(id -g)" "$DEV" "$MNT"
+echo "Windows mounted read-only at $MNT"
